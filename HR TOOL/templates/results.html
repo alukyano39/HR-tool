@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-center">Top 5 Job Matches</h1>
+{% if message %}
+<p>{{ message }}</p>
+{% else %}
+<h3>VDAB Job Matches</h3>
+<ul class="list-group mt-4">
+    {% for index, row in vdab_results.iterrows() %}
+    <li class="list-group-item">
+        <h5 class="mb-1">{{ row['title'] }}</h5>
+        <p class="mb-1">{{ row['employer'] }} - {{ row['location'] }}</p>
+        <p class="mb-1">Similarity: {{ row['similarity_percentage'] }}%</p>
+        <a href="{{ row['url'] }}" class="btn btn-primary" target="_blank">Apply</a>
+    </li>
+    {% endfor %}
+</ul>
+<h3>LinkedIn Job Matches</h3>
+<ul class="list-group mt-4">
+    {% for index, row in linkedin_results.iterrows() %}
+    <li class="list-group-item">
+        <h5 class="mb-1">{{ row['Title'] }}</h5>
+        <p class="mb-1">{{ row['Address'] }}</p>
+        <p class="mb-1">Similarity: {{ row['similarity_percentage'] }}%</p>
+        <a href="{{ row['Link'] }}" class="btn btn-primary" target="_blank">Apply</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

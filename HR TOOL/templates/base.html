@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Hunter AI</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='job_hunter_logo.ico') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .logo {
+            height: 60px;  /* Increased height for more prominence */
+            width: auto;
+        }
+        .navbar {
+            background-color: #1a1a1a;
+        }
+        .navbar-brand {
+            color: #ff7f00 !important;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .nav-link {
+            color: #ff7f00 !important;
+        }
+        body {
+            background-color: #f8f9fa;
+            margin-bottom: 100px; /* Ensure content doesn't overlap footer */
+        }
+        .btn-primary, .btn-lg {
+            background-color: #ff7f00;
+            border-color: #ff7f00;
+        }
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: #e67300;
+            border-color: #e67300;
+        }
+        .jumbotron {
+            background-image: url('/static/BANNER.png');
+            background-size: cover;
+            color: white;
+            text-shadow: 2px 2px 4px #000000;
+        }
+        .disabled-link {
+            pointer-events: none;
+            text-decoration: none; /* Remove underline */
+            cursor: default; /* Default cursor */
+        }
+        .spinner-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .spinner-container .spinner {
+            height: 50px;
+            width: 50px;
+            position: relative;
+            animation: spinner-rotate 1.2s linear infinite;
+        }
+        .spinner-container .spinner::before, .spinner-container .spinner::after {
+            content: '';
+            box-sizing: border-box;
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 6px solid transparent;
+        }
+        .spinner-container .spinner::before {
+            border-top-color: #ff7f00;
+            animation: spinner-scale 1.2s ease-in-out infinite;
+        }
+        .spinner-container .spinner::after {
+            border-bottom-color: #e67300;
+            animation: spinner-scale 1.2s ease-in-out infinite reverse;
+        }
+        @keyframes spinner-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes spinner-scale {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(0.5); }
+        }
+        footer {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 20px 0;
+            width: 100%;
+            position: fixed;
+            bottom: -100px; /* Hide the footer initially */
+            left: 0;
+            transition: bottom 0.3s;
+        }
+        footer a {
+            color: #ff7f00;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+        .cookies-popup {
+            display: none; /* Hidden by default */
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            max-width: 500px;
+            margin: auto;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            z-index: 1000;
+        }
+
+        .cookies-popup-content {
+            text-align: center;
+        }
+
+        .cookies-popup-content h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #ff7f00;
+        }
+
+        .cookies-popup-content p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .cookies-popup-content .btn {
+            margin: 5px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#searchForm').submit(function() {
+                $('#loading').show();  // Show loading screen on form submit
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if the user has already accepted cookies during this session
+            if (!sessionStorage.getItem('cookiesAccepted')) {
+                document.getElementById('cookiesPopup').style.display = 'block';
+            }
+
+            // Accept cookies and hide the popup
+            document.getElementById('acceptCookies').addEventListener('click', function() {
+                sessionStorage.setItem('cookiesAccepted', 'true');
+                document.getElementById('cookiesPopup').style.display = 'none';
+            });
+
+            var fileInput = document.getElementById('file');
+            if (fileInput) {
+                var label = fileInput.nextElementSibling; // Assuming the label directly follows the input
+                if (label && label.tagName === 'LABEL') {
+                    label.textContent = 'Choose File'; // Change to your desired English text
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="/">
+            <img src="{{ url_for('static', filename='job_hunter_logo.PNG') }}" alt="Job Hunter AI" class="logo">
+            Job Hunter AI
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/testimonies">Testimonies</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">Contact</a>
+                </li>
+                {% if session.get('user') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/profile">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">Register</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-5">
+        {% block content %}{% endblock %}
+    </div>
+    <footer class="text-center mt-5">
+        <div class="container">
+            <p>Explore more tools from Job Hunter AI (In Development):</p>
+            <a href="/resume-builder" class="btn btn-primary disabled-link">Resume Builder</a>
+            <a href="/cover-letter-generator" class="btn btn-primary disabled-link">Cover Letter Generator</a>
+            <a href="/job-alerts" class="btn btn-primary disabled-link">Job Alerts</a>
+            <a href="/interview-prep" class="btn btn-primary disabled-link">Interview Prep</a>
+        </div>        
+    </footer>
+    <script>
+        let lastScrollTop = 0;
+        window.addEventListener("scroll", function() {
+            let footer = document.querySelector("footer");
+            let st = window.pageYOffset || document.documentElement.scrollTop;
+            if (st > lastScrollTop) {
+                footer.style.bottom = "-100px"; // Hide footer on scroll down
+            } else {
+                footer.style.bottom = "0"; // Show footer on scroll up
+            }
+            lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+        }, false);
+    </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-center">Testimonies</h1>
+<div class="row mt-5">
+    {% for testimony in testimonies %}
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm" style="border-radius: 10px;">
+            <div class="card-body">
+                <h5 class="card-title">{{ testimony.name }}</h5>
+                <p class="card-text">{{ testimony.message }}</p>
+                <p class="card-text">Rating: 
+                    {% for i in range(1, 6) %}
+                        {% if i <= testimony.rating %}
+                            <span class="text-warning">&#9733;</span>
+                        {% else %}
+                            <span class="text-muted">&#9733;</span>
+                        {% endif %}
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

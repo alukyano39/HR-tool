@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="text-center">
+    <h1>Hello, {{ name }}. Please enter a keyword for filtering jobs (optional).</h1>
+    <form action="/process" method="post" class="mt-4">
+        <input type="hidden" name="extracted_text" value="{{ extracted_text }}">
+        <div class="form-group">
+            <label for="keyword">Enter a keyword:</label>
+            <input type="text" id="keyword" name="keyword" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <form action="/process" method="post" class="mt-4">
+        <input type="hidden" name="extracted_text" value="{{ extracted_text }}">
+        <button type="submit" class="btn btn-secondary">Skip Keyword</button>
+    </form>
+</div>
+{% endblock %}

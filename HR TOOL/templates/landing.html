@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Cookies Popup -->
+<div id="cookiesPopup" class="cookies-popup">
+    <div class="cookies-popup-content">
+        <h2>Cookies Policy</h2>
+        <p>We use cookies to ensure you get the best experience on our website. By continuing to use our site, you consent to our use of cookies.</p>
+        <button id="acceptCookies" class="btn btn-primary">Accept</button>
+        <a href="/cookies" class="btn btn-secondary">Learn More</a>
+    </div>
+</div>
+
+<!-- Existing Content -->
+<div class="jumbotron text-center py-4">
+    <h1 class="display-4">Welcome to Job Hunter AI</h1>
+    <p class="lead">Your trusted partner in finding the perfect job with the power of AI.</p>
+    <hr class="my-4">
+    <p>We use advanced technology to match your skills with the best job opportunities available.</p>
+    <a href="{% if session.get('user') %}/search{% else %}/login{% endif %}" class="btn btn-primary btn-lg mt-4">Start Job Hunting</a>
+</div>
+
+<div class="container mt-4">
+    <div class="row align-items-center">
+        <div class="col-md-6 mb-3">
+            <img src="{{ url_for('static', filename='career_success.png') }}" class="img-fluid" alt="Career Success">
+        </div>
+        <div class="col-md-6 mb-3">
+            <h2>AI-Powered Job Matching</h2>
+            <p>At Job Hunter AI, we leverage cutting-edge artificial intelligence to analyze your resume and match it with job opportunities that best fit your skills and preferences. Our AI algorithms continuously learn and improve to provide you with the most accurate job matches.</p>
+        </div>
+    </div>
+
+    <div class="row align-items-center mt-4">
+        <div class="col-md-6 order-md-2 mb-3">
+            <img src="{{ url_for('static', filename='job_interview_preparation.png') }}" class="img-fluid" alt="Interview Preparation">
+        </div>
+        <div class="col-md-6 order-md-1 mb-3">
+            <h2>Comprehensive Job Search</h2>
+            <p>Our platform not only matches you with jobs but also provides you with resources to prepare for interviews and improve your chances of success. Get access to interview tips, resume-building tools, and more.</p>
+        </div>
+    </div>
+
+    <div class="row align-items-center mt-4">
+        <div class="col-md-6 mb-3">
+            <img src="{{ url_for('static', filename='networking.png') }}" class="img-fluid" alt="Networking">
+        </div>
+        <div class="col-md-6 mb-3">
+            <h2>Build Your Professional Network</h2>
+            <p>Networking is a crucial part of job hunting. Job Hunter AI connects you with industry professionals and provides opportunities to expand your network. Build relationships that can help you grow your career.</p>
+        </div>
+    </div>
+</div>
+
+<div class="bg-light py-4 mt-4">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4">
+                <h3 class="text-primary">1000+</h3>
+                <p>Jobs Available</p>
+            </div>
+            <div class="col-md-4">
+                <h3 class="text-primary">500+</h3>
+                <p>Companies Hiring</p>
+            </div>
+            <div class="col-md-4">
+                <h3 class="text-primary">2000+</</h3>
+                <p>Successful Matches</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-4">
+    <a href="{% if session.get('user') %}/search{% else %}/login{% endif %}" class="btn btn-primary btn-lg">Start Job Hunting</a>
+</div>
+{% endblock %}

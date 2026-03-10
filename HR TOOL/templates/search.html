@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center mt-5" style="min-height: 50vh;">
+    <div class="card shadow-lg" style="width: 600px; border-radius: 10px;">
+        <div class="card-body">
+            <h2 class="card-title text-center">Job Search</h2>
+            <p class="text-center">Hello {{ name }}, please fill in the questions and upload your CV for tailored job recommendations.</p>
+            <form id="searchForm" action="/search" method="post" enctype="multipart/form-data" class="mt-4">
+                <div class="form-group">
+                    <label for="file">Upload CV:</label>
+                    <input type="file" id="file" name="file" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="keyword">Keyword:</label>
+                    <input type="text" id="keyword" name="keyword" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Preferred Provinces:</label>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-check">
+                                <input type="checkbox" id="antwerp" name="preferred_provinces" value="Antwerp" class="form-check-input">
+                                <label for="antwerp" class="form-check-label">Antwerp</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="brussels" name="preferred_provinces" value="Brussels" class="form-check-input">
+                                <label for="brussels" class="form-check-label">Brussels</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="east_flanders" name="preferred_provinces" value="East Flanders" class="form-check-input">
+                                <label for="east_flanders" class="form-check-label">East Flanders</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="flemish_brabant" name="preferred_provinces" value="Flemish Brabant" class="form-check-input">
+                                <label for="flemish_brabant" class="form-check-label">Flemish Brabant</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="hainaut" name="preferred_provinces" value="Hainaut" class="form-check-input">
+                                <label for="hainaut" class="form-check-label">Hainaut</label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-check">
+                                <input type="checkbox" id="liege" name="preferred_provinces" value="Liège" class="form-check-input">
+                                <label for="liege" class="form-check-label">Liège</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="limburg" name="preferred_provinces" value="Limburg" class="form-check-input">
+                                <label for="limburg" class="form-check-label">Limburg</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="luxembourg" name="preferred_provinces" value="Luxembourg" class="form-check-input">
+                                <label for="luxembourg" class="form-check-label">Luxembourg</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="namur" name="preferred_provinces" value="Namur" class="form-check-input">
+                                <label for="namur" class="form-check-label">Namur</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="west_flanders" name="preferred_provinces" value="West Flanders" class="form-check-input">
+                                <label for="west_flanders" class="form-check-label">West Flanders</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Preferred Job Categories:</label>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-check">
+                                <input type="checkbox" id="administration" name="preferred_categories" value="Administration" class="form-check-input">
+                                <label for="administration" class="form-check-label">Administration</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="agriculture" name="preferred_categories" value="Agriculture & fishing" class="form-check-input">
+                                <label for="agriculture" class="form-check-label">Agriculture & fishing</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="construction" name="preferred_categories" value="Construction & real estate" class="form-check-input">
+                                <label for="construction" class="form-check-label">Construction & real estate</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="creative" name="preferred_categories" value="Creative jobs" class="form-check-input">
+                                <label for="creative" class="form-check-label">Creative jobs</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="education" name="preferred_categories" value="Education & training" class="form-check-input">
+                                <label for="education" class="form-check-label">Education & training</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="executive" name="preferred_categories" value="Executive board & management" class="form-check-input">
+                                <label for="executive" class="form-check-label">Executive board & management</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="finance" name="preferred_categories" value="Finance, Insurance & law" class="form-check-input">
+                                <label for="finance" class="form-check-label">Finance, Insurance & law</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="government" name="preferred_categories" value="Government" class="form-check-input">
+                                <label for="government" class="form-check-label">Government</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="health" name="preferred_categories" value="Health & body care" class="form-check-input">
+                                <label for="health" class="form-check-label">Health & body care</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="hotel" name="preferred_categories" value="Hotel, catering, tourism, maintenance" class="form-check-input">
+                                <label for="hotel" class="form-check-label">Hotel, catering, tourism, maintenance</label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-check">
+                                <input type="checkbox" id="hr" name="preferred_categories" value="Human resources" class="form-check-input">
+                                <label for="hr" class="form-check-label">Human resources</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="ict" name="preferred_categories" value="ICT" class="form-check-input">
+                                <label for="ict" class="form-check-label">ICT</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="logistics" name="preferred_categories" value="Logistics, transport & purchase" class="form-check-input">
+                                <label for="logistics" class="form-check-label">Logistics, transport & purchase</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="marketing" name="preferred_categories" value="Marketing & communication" class="form-check-input">
+                                <label for="marketing" class="form-check-label">Marketing & communication</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="research" name="preferred_categories" value="Research & development" class="form-check-input">
+                                <label for="research" class="form-check-label">Research & development</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="sales" name="preferred_categories" value="Sales" class="form-check-input">
+                                <label for="sales" class="form-check-label">Sales</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="social" name="preferred_categories" value="Social, cultural & sports" class="form-check-input">
+                                <label for="social" class="form-check-label">Social, cultural & sports</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="security" name="preferred_categories" value="Surveillance & security" class="form-check-input">
+                                <label for="security" class="form-check-label">Surveillance & security</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="technics" name="preferred_categories" value="Technics, engineering & production" class="form-check-input">
+                                <label for="technics" class="form-check-label">Technics, engineering & production</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="trades" name="preferred_categories" value="Trades" class="form-check-input">
+                                <label for="trades" class="form-check-label">Trades</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="else" name="preferred_categories" value="Else" class="form-check-input">
+                                <label for="else" class="form-check-label">Else</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Experience Levels:</label>
+                    <div class="form-check">
+                        <input type="checkbox" id="starter" name="experience_levels" value="Starter" class="form-check-input">
+                        <label for="starter" class="form-check-label">Starter</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" id="experienced" name="experience_levels" value="Experienced" class="form-check-input">
+                        <label for="experienced" class="form-check-label">Experienced</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" style="border-radius: 5px;" id="searchButton">Search Jobs</button>
+            </form>
+            <!-- Loading screen -->
+            <div id="loading" class="spinner-container" style="display: none;">
+                <div class="spinner"></div>
+                <p class="mt-3">Searching jobs, please wait...</p>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="bg-dark text-white py-3 mt-5">
+    <div class="container text-center">
+        <p>&copy; 2024 Job Hunter AI. All rights reserved.</p>
+    </div>
+</footer>
+{% endblock %}

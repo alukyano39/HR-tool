@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="text-center">
+    <h1>Hello, {{ name }}. Please upload your CV.</h1>
+    <form action="/keyword" method="post" enctype="multipart/form-data" class="mt-4">
+        <input type="hidden" name="name" value="{{ name }}">
+        <div class="form-group">
+            <input type="file" name="file" accept=".pdf" class="form-control-file" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+</div>
+{% endblock %}

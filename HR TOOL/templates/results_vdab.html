@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center">Top 15 Job Matches</h1>
+    {% if message %}
+    <p>{{ message }}</p>
+    {% else %}
+    <ul class="list-group mt-4">
+        {% for index, row in results_VDAB.iterrows() %}
+        <li class="list-group-item">
+            <h5 class="mb-1 job-title">{{ loop.index }}. {{ row['title_translated'].capitalize() }}</h5>
+            <p class="mb-1">{{ row['employer'].capitalize() }} - {{ row['location'].title() }}</p>
+            <p class="mb-1">Similarity: {{ row['similarity_percentage'] }}%</p>
+            <a href="{{ row['url'] }}" class="btn btn-primary" target="_blank">Apply</a>
+        </li>
+        {% endfor %}
+    </ul>
+    <div class="text-center mt-4">
+        <button id="sendEmailButton" class="btn btn-success" onclick="sendEmail()">Send to Email</button>
+    </div>
+    <p id="emailSentMessage" style="display:none;" class="mt-2 text-success">Email sent successfully!</p>
+    {% endif %}
+</div>
+
+<script>
+    function sendEmail() {
+        const sendEmailButton = document.getElementById('sendEmailButton');
+        sendEmailButton.disabled = true;
+        sendEmailButton.textContent = 'Sending...';
+        
+        fetch('/send_email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                'user_email': '{{ session['user'] }}',
+                'job_list': {{ results_VDAB.to_json(orient='records') | safe }}
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                sendEmailButton.textContent = 'Email sent successfully!';
+                sendEmailButton.classList.remove('btn-success');
+                sendEmailButton.classList.add('btn-secondary');
+            } else {
+                sendEmailButton.textContent = 'Send to Email';
+                sendEmailButton.disabled = false;
+                alert('Failed to send email: ' + data.error);
+            }
+        })
+        .catch(error => {
+            sendEmailButton.textContent = 'Send to Email';
+            sendEmailButton.disabled = false;
+            console.error('Error:', error);
+        });
+    }
+</script>
+{% endblock %}
